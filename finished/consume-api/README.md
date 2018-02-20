@@ -4,6 +4,25 @@
 - Delete the App.test.js file, and the registerServiceWorker file
 - In index.js remove `import registerServiceWorker from './registerServiceWorker';` and also `registerServiceWorker();`
 
+- We will be using the Petfinder API.
+- Go to: https://www.petfinder.com/developers/api-key and follow the directions to get an API key.
+- Copy this API key and keep, then create a new file `PetFinder.js` inside `consume-api/src/components`. Paste your key into this file, then comment it out.
+
+- We will be using [Fetch][https://www.robinwieruch.de/react-fetching-data/] to connection to the Petfinder API
+- run `npm install fetch --save` in the terminal.
+- Open `PetFinder.js` from `/finished/consume-api/components` and copy and paste the contents into your file of the same name, avoiding deleted your API keys.
+- After the `.App-intro` `p` tag, add a tag for PetFinder: `<PetFinder/>`
+- If you IDE doesn't automatically add the import statement, add `import PetFinder from "./components/PetFinder";` to the top of your `App.js` file, just below the last import.
+- Go ahead and delete the `.App-intro` `p` tag, save your changes and you should see the 'Petfinder' title from your `PetFinder.js` component render in the browser.
+
+• Sharing state through props and how that affects rendering of JSX
+• React Router (for have multiple pages)
+• Updating state from a nested component and updating content across your site.
+• Display and manipulate data from an API
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
