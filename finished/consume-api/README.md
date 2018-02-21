@@ -21,8 +21,14 @@
 • Display and manipulate data from an API
 
 - sort breeds by 3 options, and then click through to relevant detail page
+- Find a dog
+    - Dog search
+    - Always search for dog by ZIP
+    - Have options of:
+        -    size, sex
+    - After sorting, create page with pet details
 - Use reactRouter to create the links
-- make sure back button worksa
+- make sure back button works
 
 
 
