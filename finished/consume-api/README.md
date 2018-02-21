@@ -20,6 +20,10 @@
 • Updating state from a nested component and updating content across your site.
 • Display and manipulate data from an API
 
+- sort breeds by 3 options, and then click through to relevant detail page
+- Use reactRouter to create the links
+- make sure back button works
+
 
 
 
