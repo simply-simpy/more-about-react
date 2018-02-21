@@ -31,7 +31,32 @@
 - make sure back button works
 
 
+-- Discuss how to program
+-- like a recipe
+-- type out steps before hand
+-- break down each step
+-- then write the smallest amount of code you can test
+-- Repeat
+-- research the problem you are trying to solve
+-- use bits and pieces of other peoples code
+-- Use copy and paste, and code completion from your IDE — trying to memorize everything is difficult for most people.
+-- Use an IDE that shows errors in your JS before you look in a browser — Webstorm
+-- Use an IDE that has split-view, and use it.
+-- Learn how to search through all of your files for a string
+-- Learn how to quick open files
+-- Make sure your HTML validates (https://chrome.google.com/webstore/detail/validity/bbicmjjbohdfglopkidebfccilipgeif?hl=en-GB)
+-- Use Chrome as your development browser —- Test in all popular browsers (Remember, Chrome is from Google)
+-- Use a scratch page in your files or a text file to keep snippets of code, manipulate code, keep URLs for your project, etc.
+-- Focus on a niche until you are really good — then learn other things
+-- Gain an understanding of how to use `console.log(someVariable)`
+-- Before creating an output on the page, get an output in the console.
 
+Examples:
+    UX Design
+    HTML/CSS/jQuery Development
+    Javascript programming and Libraries such as React.
+-- If you like React, but have limited professional opportunities and you have an offer for work in Angular — take it.
+-- If you are a designer and have limited professional opportunities in web design and get offered a UX position — take it.
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
