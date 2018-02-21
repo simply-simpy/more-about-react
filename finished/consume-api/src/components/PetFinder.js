@@ -6,17 +6,7 @@ import fetchJsonp from 'fetch-jsonp';
 //
 // API Secret
 // ac623dbd3d77179e3bce73edbf3d3a6d
-// http://api.petfinder.com/my.method?key=12345&arg1=foo
-// http://api.petfinder.com/breed.list?format=json&key=975b1fe8f29db679023e4bac68f2f3fa
-// http://api.petfinder.com?key=975b1fe8f29db679023e4bac68f2f3fa&breed.list
-// http://api.petfinder.com/my.method?format=json&key=12345&callback=?
-// http://api.petfinder.com/breed.list?key=975b1fe8f29db679023e4bac68f2f3fa&animal="dog"
-// http://api.petfinder.com/breed.list?key=975b1fe8f29db679023e4bac68f2f3fa&animal=dog&format=json
-// http://api.petfinder.com/?key=975b1fe8f29db679023e4bac68f2f3fa?key=breed.list&animal=dog
-// http://api.petfinder.com/?key=975b1fe8f29db679023e4bac68f2f3fabreed.list&animal=dog
-// http://api.petfinder.com/breed.list&animal=dog?key=975b1fe8f29db679023e4bac68f2f3fabreed.list&animal=dog
-// http://api.petfinder.com/breed.list?key=975b1fe8f29db679023e4bac68f2f3fa&animal=dogformat=&json&callback=1222212323231451
-// http://api.petfinder.com/breed.list?key=975b1fe8f29db679023e4bac68f2f3fa&animal=dog&format=json&callback=1222212323231451
+
 const API = 'http://api.petfinder.com/';
 const API_KEY = '975b1fe8f29db679023e4bac68f2f3fa';
 const DEFAULT_QUERY = 'breed.list';
@@ -29,33 +19,55 @@ export default class PetFinder extends React.Component {
     super(props);
     this.state = {
       pets: [],
+      requestFailed: true
     }
   }
 
   timeStamp = () => Date.now();
 
-  componentDidMount() {
-    fetchJsonp(API + DEFAULT_QUERY + '?key=' + API_KEY + '&animal=' + ANIMAL + '&format=' + FORMAT + '&cb=' + this.timeStamp(), {
-      jsonpCallbackFunction: 'cb'
-    })
-        .then(response => response.json())
-        .then(data => console.log(data) )
-        .then(data => console.log(data) )
-        // .then(data => data.map(function(item){
-        //   console.log(item)
-        // }))
-        //.then(data => this.setState({ pets: data.petfinder.breeds.breed })
+  callAPI = () => {
+    console.log('click')
+    return fetchJsonp(API + DEFAULT_QUERY + '?key=' + API_KEY + '&animal=' + ANIMAL + '&format=' + FORMAT + '&cb=' + this.timeStamp(), {jsonpCallbackFunction: 'cb'})
+        .then((resp) => resp.json())
+        .then(resp => {
+          let breeds = resp.petfinder.breeds.breed.map(breed => breed.$t);
+          this.setState({
+            pets: breeds,
+            requestFailed: false
+          })
+        })
+        .catch((error) => {
+          this.setState({
+            requestFailed: true
+          });
+          console.log('API Error: ', error);
+        });
+  };
 
-    .catch(function (ex) {
-      console.log('parsing failed', ex)
-    })
-  }
+  // from: https://reactjs.org/docs/lists-and-keys.html#extracting-components-with-keys
+
 
   render() {
+    let ListItem = (props) => <li>{props.value}</li>;
+
+    let PetList = (props) => {
+      const pets = props.pets;
+      const listItems = pets.map((pet) =>
+          <ListItem key={pet} value={pet}/>
+      );
+
+      return (
+          <ul>
+            {listItems}
+          </ul>
+      )
+    };
     return (
         <div>
           <h1>Petfinder</h1>
-          {this.state.pets}
+          <button onClick={this.callAPI}>Get Data</button>
+          {console.log(this.state)}
+          <PetList pets={this.state.pets}/>
         </div>
     )
   }
