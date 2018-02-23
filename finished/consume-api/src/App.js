@@ -75,7 +75,7 @@ export default class App extends React.Component {
         .then((resp) => resp.json())
         .then(resp => {
           console.log('all the pets: ', resp.petfinder.pets)
-          let dogs = resp.petfinder.pets.pet.map(function(dog){
+          let dogs = resp.petfinder.pets.pet.map(function (dog) {
             return dog;
           });
           console.log('dogs: ', dogs)
@@ -96,19 +96,15 @@ export default class App extends React.Component {
       console.log(API + DEFAULT_QUERY + '?key=' + API_KEY + '&animal=' + ANIMAL + '&format=' + FORMAT + '&cb=' + this.timeStamp(), {jsonpCallbackFunction: 'cb'})
     }
     return (
-        <div className="container">
-
-              <SearchForPet
-                  submitSearchCallback={this.submitSearchCallback}
-                  zipHandleChangeCallback={this.zipHandleChangeCallback}
-                  ageHandleChangeCallback={this.ageHandleChangeCallback}
-                  sizeHandleChangeCallback={this.sizeHandleChangeCallback}
-                  sexHandleChangeCallback={this.sexHandleChangeCallback}
-                  dogs={this.state.dogs}
-                  error={this.state.requestFailed}
-              />
-
-          </div>
+        <SearchForPet
+            submitSearchCallback={this.submitSearchCallback}
+            zipHandleChangeCallback={this.zipHandleChangeCallback}
+            ageHandleChangeCallback={this.ageHandleChangeCallback}
+            sizeHandleChangeCallback={this.sizeHandleChangeCallback}
+            sexHandleChangeCallback={this.sexHandleChangeCallback}
+            dogs={this.state.dogs}
+            error={this.state.requestFailed}
+        />
     );
   }
 }

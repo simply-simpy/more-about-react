@@ -7,25 +7,25 @@ import PropTypes from 'prop-types';
 export default class SearchForPet extends React.Component {
 
   // from: https://reactjs.org/docs/lists-and-keys.html#extracting-components-with-keys
- setSize(size){
-   switch(size){
-     case "S":
-       size = "Small";
-       break;
-     case "M":
-       size = "Medium";
-       break;
-     case "L":
-       size = "Large";
-       break;
-     case "XL":
-       size = "Extra-large";
-       break;
-     default:
-       size = "Not Available"
-   }
-   return size;
- }
+  setSize(size) {
+    switch (size) {
+      case "S":
+        size = "Small";
+        break;
+      case "M":
+        size = "Medium";
+        break;
+      case "L":
+        size = "Large";
+        break;
+      case "XL":
+        size = "Extra-large";
+        break;
+      default:
+        size = "Not Available"
+    }
+    return size;
+  }
 
   render() {
 
@@ -39,11 +39,12 @@ export default class SearchForPet extends React.Component {
             <div className="age"><strong>Age:</strong> {dog.age.$t}</div>
             <div className="size"><strong>Size:</strong> {this.setSize(dog.size.$t)}</div>
             {dog.contact.email.$t ? (
-                <div className="email"><strong>Email:</strong> <a href={dog.contact.email.$t}>{dog.contact.email.$t}</a></div>
-            ): (false)}
+                <div className="email"><strong>Email:</strong> <a href={dog.contact.email.$t}>{dog.contact.email.$t}</a>
+                </div>
+            ) : (false)}
             {dog.contact.phone.$t ? (
-            <div className="phone"><strong>Phone:</strong> {dog.contact.phone.$t}</div>
-                ): (false)}
+                <div className="phone"><strong>Phone:</strong> {dog.contact.phone.$t}</div>
+            ) : (false)}
           </div>
         </li>
     );
@@ -61,59 +62,61 @@ export default class SearchForPet extends React.Component {
 
 
     return (
-        <div className="row">
-          <div className="col-sm-6">
-            <h2>Find an adoptable dog</h2>
-            <form onSubmit={this.props.submitSearchCallback}>
-              <div className="form-group">
-                <label htmlFor="zip">ZIP code where you are looking for a dog <span>*</span></label>
-                <input onChange={this.props.zipHandleChangeCallback} type="zip" className="form-control" id="zip"
-                       aria-describedby="emailHelp"
-                       placeholder="Please enter 5 digit ZIP" pattern="[0-9]{5}" maxLength="5"/>
+        <div>
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-6">
+                <h2>Find an adoptable dog</h2>
+                <form onSubmit={this.props.submitSearchCallback}>
+                  <div className="form-group">
+                    <label htmlFor="zip">ZIP code where you are looking for a dog <span>*</span></label>
+                    <input onChange={this.props.zipHandleChangeCallback} type="zip" className="form-control" id="zip"
+                           aria-describedby="emailHelp"
+                           placeholder="Please enter 5 digit ZIP" pattern="[0-9]{5}" maxLength="5"/>
+                  </div>
+
+                  <select onChange={this.props.ageHandleChangeCallback} className="form-control" defaultValue='age'
+                          id="age">
+                    <option value="age">Dog Age</option>
+                    <option value="baby">Baby</option>
+                    <option value="young">Young</option>
+                    <option value="adult">Adult</option>
+                    <option value="senior">Senior</option>
+                  </select>
+
+                  <select onChange={this.props.sizeHandleChangeCallback} className="form-control" defaultValue="size">
+                    <option value="size">Dog Size</option>
+                    <option value="S">Small</option>
+                    <option value="M">Medium</option>
+                    <option value="L">Large</option>
+                    <option value="XL">Extra-large</option>
+                  </select>
+
+                  <div className="form-check">
+                    <input onChange={this.props.sexHandleChangeCallback} className="form-check-input" type="radio"
+                           name="sex"
+                           id="radio-female" value="F"/>
+                    <label className="form-check-label" htmlFor="radio-female">
+                      Female
+                    </label>
+                  </div>
+                  <div className="form-check">
+                    <input onChange={this.props.sexHandleChangeCallback} className="form-check-input" type="radio"
+                           name="sex"
+                           id="radio-male" value="M"/>
+                    <label className="form-check-label" htmlFor="radio-male">
+                      Male
+                    </label>
+                  </div>
+
+                  <button type="submit" className="btn btn-primary">Find your pooch!</button>
+                </form>
               </div>
-
-              <select onChange={this.props.ageHandleChangeCallback} className="form-control" defaultValue='age'
-                      id="age">
-                <option value="age">Dog Age</option>
-                <option value="baby">Baby</option>
-                <option value="young">Young</option>
-                <option value="adult">Adult</option>
-                <option value="senior">Senior</option>
-              </select>
-
-              <select onChange={this.props.sizeHandleChangeCallback} className="form-control" defaultValue="size">
-                <option value="size">Dog Size</option>
-                <option value="S">Small</option>
-                <option value="M">Medium</option>
-                <option value="L">Large</option>
-                <option value="XL">Extra-large</option>
-              </select>
-
-              <div className="form-check">
-                <input onChange={this.props.sexHandleChangeCallback} className="form-check-input" type="radio"
-                       name="sex"
-                       id="radio-female" value="F"/>
-                <label className="form-check-label" htmlFor="radio-female">
-                  Female
-                </label>
-              </div>
-              <div className="form-check">
-                <input onChange={this.props.sexHandleChangeCallback} className="form-check-input" type="radio"
-                       name="sex"
-                       id="radio-male" value="M"/>
-                <label className="form-check-label" htmlFor="radio-male">
-                  Male
-                </label>
-              </div>
-
-              <button type="submit" className="btn btn-primary">Find your pooch!</button>
-            </form>
+            </div>
           </div>
-          <div className="col-sm-6">
-            {this.props.dogs.length > 0 ? (
-                <DogList/>
-            ) : (false)}
-          </div>
+          {this.props.dogs.length > 0 ? (
+              <DogList/>
+          ) : (false)}
         </div>
     )
   }
