@@ -30,7 +30,8 @@
 - Use reactRouter to create the links
 - make sure back button works
 
-
+- NEXT: Get list of pets rendering to the page from submitSearchCallback
+- Add 'showing: text'
 -- Discuss how to program
 -- like a recipe
 -- type out steps before hand

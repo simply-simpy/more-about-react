@@ -1,9 +1,7 @@
 import React from 'react';
 import './App.css';
-import PetFinder from "./components/PetFinder";
 import fetchJsonp from "fetch-jsonp";
 import SearchForPet from "./components/SearchForPet";
-
 
 
 // API Key
@@ -25,6 +23,7 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       pets: [],
+      dogs: [],
       requestFailed: true,
       zip: "",
       age: "",
@@ -32,6 +31,7 @@ export default class App extends React.Component {
       sex: ""
     }
   }
+
   timeStamp = () => Date.now();
 
   callAPICallback = () => {
@@ -70,32 +70,45 @@ export default class App extends React.Component {
     console.log(`search for pet url:
         ${API}?key=${API_KEY}&animal=${ANIMAL}&location=${this.state.zip}&sex=${this.state.sex}&size=${this.state.size}&output=${OUTPUT}&format=${FORMAT}&cb=${this.timeStamp()}
     `
-    )
+    );
+    return fetchJsonp(`${API}?key=${API_KEY}&animal=${ANIMAL}&location=${this.state.zip}&sex=${this.state.sex}&size=${this.state.size}&output=${OUTPUT}&format=${FORMAT}&cb=${this.timeStamp()}`)
+        .then((resp) => resp.json())
+        .then(resp => {
+          console.log('all the pets: ', resp.petfinder.pets)
+          let dogs = resp.petfinder.pets.pet.map(function(dog){
+            return dog;
+          });
+          console.log('dogs: ', dogs)
+          this.setState({
+            dogs: dogs
+          })
+        })
+        .catch((error) => {
+          this.setState({
+            requestFailed: true
+          });
+          console.log('API Error: ', error);
+        });
   };
 
   render() {
-    console.log('zip change: ', this.state.zip);
-    console.log('dog age: ', this.state.age);
-    console.log('dog size: ', this.state.size);
-    console.log('dog sex: ', this.state.sex);
-    {console.log(API + DEFAULT_QUERY + '?key=' + API_KEY + '&animal=' + ANIMAL + '&format=' + FORMAT + '&cb=' + this.timeStamp(), {jsonpCallbackFunction: 'cb'})}
+    {
+      console.log(API + DEFAULT_QUERY + '?key=' + API_KEY + '&animal=' + ANIMAL + '&format=' + FORMAT + '&cb=' + this.timeStamp(), {jsonpCallbackFunction: 'cb'})
+    }
     return (
         <div className="container">
-          <div className="row">
-            <div className="col-sm">
-              <h1 className="App-title">How to consume an API in ReactJS</h1>
-              <PetFinder callAPI={this.callAPICallback} pets={this.state.pets}/>
+
               <SearchForPet
                   submitSearchCallback={this.submitSearchCallback}
                   zipHandleChangeCallback={this.zipHandleChangeCallback}
                   ageHandleChangeCallback={this.ageHandleChangeCallback}
                   sizeHandleChangeCallback={this.sizeHandleChangeCallback}
                   sexHandleChangeCallback={this.sexHandleChangeCallback}
-                  callAPI={this.searchForPetCallback}
-                  pets={this.state.pets}/>
-            </div>
+                  dogs={this.state.dogs}
+                  error={this.state.requestFailed}
+              />
+
           </div>
-        </div>
     );
   }
 }
