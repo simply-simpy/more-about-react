@@ -1,5 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Loader from 'react-loaders';
+import Truncate from 'react-truncate';
+import '../../node_modules/loaders.css/loaders.min.css';
+
 
 // Build this:
 //http://api.petfinder.com/pet.find?key=975b1fe8f29db679023e4bac68f2f3fa&animal=dog&location=97209&sex=M&age=Adult&output=basic&format=json&callback=123456
@@ -28,13 +32,16 @@ export default class SearchForPet extends React.Component {
   }
 
   render() {
-
     const dogs = this.props.dogs.map((dog, index) =>
         <li key={index}>
           <div className="pet">
             <img src={dog.media.photos.photo[2].$t} alt=""/>
             <h3>{dog.name.$t}</h3>
-            <div className="description">{dog.description.$t}</div>
+            <div className="description">
+              <Truncate lines={5} ellipsis={<span>... <a href='/link/to/article'>Read more</a></span>}>
+                {dog.description.$t}
+              </Truncate>
+            </div>
             <div className="sex"><strong>Sex:</strong> {dog.sex.$t === "M" ? "Male" : "Female"}</div>
             <div className="age"><strong>Age:</strong> {dog.age.$t}</div>
             <div className="size"><strong>Size:</strong> {this.setSize(dog.size.$t)}</div>
@@ -53,13 +60,15 @@ export default class SearchForPet extends React.Component {
       return (
           <div className="dog-list">
             <h2>Your dogs</h2>
-            <ul>
-              {dogs}
-            </ul>
+            <div className="dog-list-wrap">
+              <Loader type="line-scale" active={this.props.isLoadingDogs}/>
+              <ul>
+                {dogs}
+              </ul>
+            </div>
           </div>
       )
     };
-
 
     return (
         <div>
@@ -114,6 +123,7 @@ export default class SearchForPet extends React.Component {
               </div>
             </div>
           </div>
+
           {this.props.dogs.length > 0 ? (
               <DogList/>
           ) : (false)}

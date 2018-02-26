@@ -28,30 +28,13 @@ export default class App extends React.Component {
       zip: "",
       age: "",
       size: "",
-      sex: ""
+      sex: "",
+      isLoadingDogs: false
     }
   }
 
   timeStamp = () => Date.now();
 
-  callAPICallback = () => {
-    console.log('click call api callback')
-    return fetchJsonp(API + DEFAULT_QUERY + '?key=' + API_KEY + '&animal=' + ANIMAL + '&format=' + FORMAT + '&cb=' + this.timeStamp(), {jsonpCallbackFunction: 'cb'})
-        .then((resp) => resp.json())
-        .then(resp => {
-          let breeds = resp.petfinder.breeds.breed.map(breed => breed.$t);
-          this.setState({
-            pets: breeds,
-            requestFailed: false
-          })
-        })
-        .catch((error) => {
-          this.setState({
-            requestFailed: true
-          });
-          console.log('API Error: ', error);
-        });
-  };
   zipHandleChangeCallback = (event) => {
     this.setState({zip: event.target.value});
   };
@@ -66,6 +49,10 @@ export default class App extends React.Component {
   };
 
   submitSearchCallback = (event) => {
+    console.log('click call api callback')
+    this.setState({
+      isLoadingDogs: true
+    });
     event.preventDefault();
     console.log(`search for pet url:
         ${API}?key=${API_KEY}&animal=${ANIMAL}&location=${this.state.zip}&sex=${this.state.sex}&size=${this.state.size}&output=${OUTPUT}&format=${FORMAT}&cb=${this.timeStamp()}
@@ -78,14 +65,16 @@ export default class App extends React.Component {
           let dogs = resp.petfinder.pets.pet.map(function (dog) {
             return dog;
           });
-          console.log('dogs: ', dogs)
           this.setState({
+            isLoadingDogs: false,
             dogs: dogs
+
           })
         })
         .catch((error) => {
           this.setState({
-            requestFailed: true
+            requestFailed: true,
+            isLoadingDogs: false
           });
           console.log('API Error: ', error);
         });
@@ -103,6 +92,7 @@ export default class App extends React.Component {
             sizeHandleChangeCallback={this.sizeHandleChangeCallback}
             sexHandleChangeCallback={this.sexHandleChangeCallback}
             dogs={this.state.dogs}
+            isLoadingDogs={this.state.isLoadingDogs}
             error={this.state.requestFailed}
         />
     );
