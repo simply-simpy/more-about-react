@@ -1,16 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Loader from 'react-loaders';
 import Truncate from 'react-truncate';
-import '../../node_modules/loaders.css/loaders.min.css';
 
-
-// Build this:
-//http://api.petfinder.com/pet.find?key=975b1fe8f29db679023e4bac68f2f3fa&animal=dog&location=97209&sex=M&age=Adult&output=basic&format=json&callback=123456
 
 export default class SearchForPet extends React.Component {
 
-  // from: https://reactjs.org/docs/lists-and-keys.html#extracting-components-with-keys
   setSize(size) {
     switch (size) {
       case "S":
@@ -32,10 +26,12 @@ export default class SearchForPet extends React.Component {
   }
 
   render() {
-    const dogs = this.props.dogs.map((dog, index) =>
+    let dogs = this.props.dogs.map((dog, index) =>
         <li key={index}>
           <div className="pet">
-            <img src={dog.media.photos.photo[2].$t} alt=""/>
+            {dog.media.photos !== undefined ? (
+                <img src={dog.media.photos.photo[2].$t} alt=""/>
+            ) : (false)}
             <h3>{dog.name.$t}</h3>
             <div className="description">
               <Truncate lines={5} ellipsis={<span>... <a href='/link/to/article'>Read more</a></span>}>
@@ -46,7 +42,8 @@ export default class SearchForPet extends React.Component {
             <div className="age"><strong>Age:</strong> {dog.age.$t}</div>
             <div className="size"><strong>Size:</strong> {this.setSize(dog.size.$t)}</div>
             {dog.contact.email.$t ? (
-                <div className="email"><strong>Email:</strong> <a href={dog.contact.email.$t}>{dog.contact.email.$t}</a>
+                <div className="email"><strong>Email:</strong> <a
+                    href={dog.contact.email.$t}>{dog.contact.email.$t}</a>
                 </div>
             ) : (false)}
             {dog.contact.phone.$t ? (
@@ -56,12 +53,12 @@ export default class SearchForPet extends React.Component {
         </li>
     );
 
+
     let DogList = () => {
       return (
           <div className="dog-list">
             <h2>Your dogs</h2>
             <div className="dog-list-wrap">
-              <Loader type="line-scale" active={this.props.isLoadingDogs}/>
               <ul>
                 {dogs}
               </ul>
@@ -79,21 +76,32 @@ export default class SearchForPet extends React.Component {
                 <form onSubmit={this.props.submitSearchCallback}>
                   <div className="form-group">
                     <label htmlFor="zip">ZIP code where you are looking for a dog <span>*</span></label>
-                    <input onChange={this.props.zipHandleChangeCallback} type="zip" className="form-control" id="zip"
+                    <input onChange={this.props.zipHandleChangeCallback}
+                           type="zip"
+                           className="form-control"
+                           id="zip"
                            aria-describedby="emailHelp"
-                           placeholder="Please enter 5 digit ZIP" pattern="[0-9]{5}" maxLength="5"/>
+                           placeholder="Please enter 5 digit ZIP"
+                           pattern="[0-9]{5}"
+                           maxLength="5"
+                           required/>
                   </div>
 
-                  <select onChange={this.props.ageHandleChangeCallback} className="form-control" defaultValue='age'
-                          id="age">
+                  <select
+                      onChange={this.props.ageHandleChangeCallback}
+                      className="form-control"
+                      defaultValue='age'
+                      id="age">
                     <option value="age">Dog Age</option>
-                    <option value="baby">Baby</option>
-                    <option value="young">Young</option>
-                    <option value="adult">Adult</option>
-                    <option value="senior">Senior</option>
+                    <option value="Baby">Baby</option>
+                    <option value="Young">Young</option>
+                    <option value="Adult">Adult</option>
+                    <option value="Senior">Senior</option>
                   </select>
 
-                  <select onChange={this.props.sizeHandleChangeCallback} className="form-control" defaultValue="size">
+                  <select onChange={this.props.sizeHandleChangeCallback}
+                          className="form-control"
+                          defaultValue="size">
                     <option value="size">Dog Size</option>
                     <option value="S">Small</option>
                     <option value="M">Medium</option>
@@ -102,22 +110,27 @@ export default class SearchForPet extends React.Component {
                   </select>
 
                   <div className="form-check">
-                    <input onChange={this.props.sexHandleChangeCallback} className="form-check-input" type="radio"
+                    <input onChange={this.props.sexHandleChangeCallback}
+                           className="form-check-input"
+                           type="radio"
                            name="sex"
-                           id="radio-female" value="F"/>
-                    <label className="form-check-label" htmlFor="radio-female">
+                           id="radio-female"
+                           value="F"/>
+                    <label className="form-check-label"
+                           htmlFor="radio-female">
                       Female
                     </label>
                   </div>
                   <div className="form-check">
-                    <input onChange={this.props.sexHandleChangeCallback} className="form-check-input" type="radio"
+                    <input onChange={this.props.sexHandleChangeCallback}
+                           className="form-check-input"
+                           type="radio"
                            name="sex"
                            id="radio-male" value="M"/>
                     <label className="form-check-label" htmlFor="radio-male">
                       Male
                     </label>
                   </div>
-
                   <button type="submit" className="btn btn-primary">Find your pooch!</button>
                 </form>
               </div>
